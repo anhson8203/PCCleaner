@@ -1,0 +1,10 @@
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\bin\Release\PCCleaner.exe.config
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\bin\Release\PCCleaner.exe
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\bin\Release\PCCleaner.pdb
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.AssemblyReference.cache
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.Form1.resources
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.Properties.Resources.resources
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.GenerateResource.cache
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.CoreCompileInputs.cache
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.exe
+D:\RMIT University\Self Study\C#\PCCleaner\PCCleaner\obj\Release\PCCleaner.pdb
