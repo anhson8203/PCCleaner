@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace PCCleaner
@@ -10,7 +11,11 @@ namespace PCCleaner
         int FoldersDeleted = 0;
         int TotalFiles = 0;
 
-        public Form1() => InitializeComponent();
+        public Form1()
+        {
+            InitializeComponent();
+            Load += new EventHandler(Form1_Load);
+        }
 
         private void ResetCounter()
         {
@@ -19,9 +24,18 @@ namespace PCCleaner
             TotalFiles = 0;
         }
 
-        private Boolean IsFolderEmpty(DirectoryInfo folder)
+        private bool IsFolderEmpty(DirectoryInfo folder) => folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
+
+        private bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
+        private void Form1_Load(object sender, EventArgs e)
         {
-            return folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
+            if (IsAdmin())
+            {
+                return;
+            }
+
+            MessageBox.Show("This program is not running with administrative privileges. Some functions may not work properly", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void CleanTempFolder(object sender, EventArgs e)
