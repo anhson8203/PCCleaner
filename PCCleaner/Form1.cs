@@ -41,11 +41,25 @@ namespace PCCleaner
         private void CleanTempFolder(object sender, EventArgs e)
         {
             ResetCounter();
-            var tempDirectory = new DirectoryInfo(Path.GetTempPath());
+            var userTempDirectory = new DirectoryInfo(Path.GetTempPath());
+            var windowsTempDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"));
 
-            _totalFiles = tempDirectory.GetFiles().Length + tempDirectory.GetDirectories().Length;
+            _totalFiles = userTempDirectory.GetFiles().Length + userTempDirectory.GetDirectories().Length + windowsTempDirectory.GetFiles().Length + windowsTempDirectory.GetDirectories().Length;
 
-            foreach (var file in tempDirectory.GetFiles())
+            foreach (var file in userTempDirectory.GetFiles())
+            {
+                try
+                {
+                    file.Delete();
+                    _filesDeleted++;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            
+            foreach (var file in windowsTempDirectory.GetFiles())
             {
                 try
                 {
@@ -58,7 +72,20 @@ namespace PCCleaner
                 }
             }
 
-            foreach (var folder in tempDirectory.GetDirectories())
+            foreach (var folder in userTempDirectory.GetDirectories())
+            {
+                try
+                {
+                    folder.Delete(true);
+                    _foldersDeleted++;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            
+            foreach (var folder in windowsTempDirectory.GetDirectories())
             {
                 try
                 {
@@ -77,11 +104,39 @@ namespace PCCleaner
         private void CleanNvidiaCache(object sender, EventArgs e)
         {
             ResetCounter();
-            var nvidiaCachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
+            var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
+            var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
 
-            if (Directory.Exists(nvidiaCachePath))
+            if (Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
             {
-                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePath);
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
+
+                if (IsFolderEmpty(nvidiaCacheDirectory))
+                {
+                    MessageBox.Show("NVIDIA DXCache directory is already empty!");
+                    return;
+                }
+
+                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
+
+                foreach (var file in nvidiaCacheDirectory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
+            }
+            else if (!Directory.Exists(nvidiaCachePathNew) && Directory.Exists(nvidiaCachePathOld))
+            {
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
 
                 if (IsFolderEmpty(nvidiaCacheDirectory))
                 {
