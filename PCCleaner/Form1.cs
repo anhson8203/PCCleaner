@@ -106,8 +106,35 @@ namespace PCCleaner
             ResetCounter();
             var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
             var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
+            
+            if (!Directory.Exists(nvidiaCachePathNew))
+            {
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathOld);
 
-            if (Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
+                if (IsFolderEmpty(nvidiaCacheDirectory))
+                {
+                    MessageBox.Show("NVIDIA DXCache directory is already empty!");
+                    return;
+                }
+
+                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
+
+                foreach (var file in nvidiaCacheDirectory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
+            }
+            else if (Directory.Exists(nvidiaCachePathNew))
             {
                 var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
 
@@ -134,36 +161,9 @@ namespace PCCleaner
 
                 MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
             }
-            else if (!Directory.Exists(nvidiaCachePathNew) && Directory.Exists(nvidiaCachePathOld))
+            else if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
             {
-                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
-
-                if (IsFolderEmpty(nvidiaCacheDirectory))
-                {
-                    MessageBox.Show("NVIDIA DXCache directory is already empty!");
-                    return;
-                }
-
-                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
-
-                foreach (var file in nvidiaCacheDirectory.GetFiles())
-                {
-                    try
-                    {
-                        file.Delete();
-                        _filesDeleted++;
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-
-                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
-            }
-            else
-            {
-                MessageBox.Show("NVIDIA DXCache directory does not exist on this machine.");
+                MessageBox.Show("NVIDIA DXCache directory not found on this machine!");
             }
         }
 
