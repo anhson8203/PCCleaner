@@ -7,28 +7,28 @@ namespace PCCleaner
 {
     public partial class Form1 : Form
     {
-        int FilesDeleted = 0;
-        int FoldersDeleted = 0;
-        int TotalFiles = 0;
+        private int _filesDeleted;
+        private int _foldersDeleted;
+        private int _totalFiles;
 
         public Form1()
         {
             InitializeComponent();
-            Load += new EventHandler(Form1_Load);
+            Load += Form1_Load;
         }
 
         private void ResetCounter()
         {
-            FilesDeleted = 0;
-            FoldersDeleted = 0;
-            TotalFiles = 0;
+            _filesDeleted = 0;
+            _foldersDeleted = 0;
+            _totalFiles = 0;
         }
 
-        private bool IsFolderEmpty(DirectoryInfo folder) => folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
+        private static bool IsFolderEmpty(DirectoryInfo folder) => folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
 
-        private bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
-        private void Form1_Load(object sender, EventArgs e)
+        private static void Form1_Load(object sender, EventArgs e)
         {
             if (IsAdmin())
             {
@@ -41,41 +41,47 @@ namespace PCCleaner
         private void CleanTempFolder(object sender, EventArgs e)
         {
             ResetCounter();
-            DirectoryInfo tempDirectory = new DirectoryInfo(Path.GetTempPath());
+            var tempDirectory = new DirectoryInfo(Path.GetTempPath());
 
-            TotalFiles = tempDirectory.GetFiles().Length + tempDirectory.GetDirectories().Length;
+            _totalFiles = tempDirectory.GetFiles().Length + tempDirectory.GetDirectories().Length;
 
-            foreach (FileInfo file in tempDirectory.GetFiles())
+            foreach (var file in tempDirectory.GetFiles())
             {
                 try
                 {
                     file.Delete();
-                    FilesDeleted++;
+                    _filesDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            foreach (DirectoryInfo folder in tempDirectory.GetDirectories())
+            foreach (var folder in tempDirectory.GetDirectories())
             {
                 try
                 {
                     folder.Delete(true);
-                    FoldersDeleted++;
+                    _foldersDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            MessageBox.Show(FilesDeleted + " files and " + FoldersDeleted + " folders deleted of total " + TotalFiles + " files!");
+            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
         }
 
         private void CleanNvidiaCache(object sender, EventArgs e)
         {
             ResetCounter();
-            string nvidiaCachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
+            var nvidiaCachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
 
             if (Directory.Exists(nvidiaCachePath))
             {
-                DirectoryInfo nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePath);
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePath);
 
                 if (IsFolderEmpty(nvidiaCacheDirectory))
                 {
@@ -83,19 +89,22 @@ namespace PCCleaner
                     return;
                 }
 
-                TotalFiles = nvidiaCacheDirectory.GetFiles().Length;
+                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
 
-                foreach (FileInfo file in nvidiaCacheDirectory.GetFiles())
+                foreach (var file in nvidiaCacheDirectory.GetFiles())
                 {
                     try
                     {
                         file.Delete();
-                        FilesDeleted++;
+                        _filesDeleted++;
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
 
-                MessageBox.Show(FilesDeleted + " files deleted of total " + TotalFiles + " files!");
+                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
             }
             else
             {
@@ -106,7 +115,7 @@ namespace PCCleaner
         private void CleanPrefetch(object sender, EventArgs e)
         {
             ResetCounter();
-            DirectoryInfo prefetchDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"));
+            var prefetchDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"));
 
             if (IsFolderEmpty(prefetchDirectory))
             {
@@ -114,35 +123,41 @@ namespace PCCleaner
                 return;
             }
 
-            TotalFiles = prefetchDirectory.GetFiles().Length;
+            _totalFiles = prefetchDirectory.GetFiles().Length;
 
-            foreach (FileInfo file in prefetchDirectory.GetFiles())
+            foreach (var file in prefetchDirectory.GetFiles())
             {
                 try
                 {
                     file.Delete();
-                    FilesDeleted++;
+                    _filesDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            foreach (DirectoryInfo folder in prefetchDirectory.GetDirectories())
+            foreach (var folder in prefetchDirectory.GetDirectories())
             {
                 try
                 {
                     folder.Delete(true);
-                    FoldersDeleted++;
+                    _foldersDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            MessageBox.Show("Deleted " + FilesDeleted + " files and " + FoldersDeleted + " folders of total " + TotalFiles + " files!");
+            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
         }
 
         private void CleanWindowsUpdatePackages(object sender, EventArgs e)
         {
             ResetCounter();
-            DirectoryInfo windowsUpdatePackagesDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"));
+            var windowsUpdatePackagesDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"));
 
             if (IsFolderEmpty(windowsUpdatePackagesDirectory))
             {
@@ -150,29 +165,35 @@ namespace PCCleaner
                 return;
             }
 
-            TotalFiles = windowsUpdatePackagesDirectory.GetFiles().Length + windowsUpdatePackagesDirectory.GetDirectories().Length;
+            _totalFiles = windowsUpdatePackagesDirectory.GetFiles().Length + windowsUpdatePackagesDirectory.GetDirectories().Length;
 
-            foreach (FileInfo file in windowsUpdatePackagesDirectory.GetFiles())
+            foreach (var file in windowsUpdatePackagesDirectory.GetFiles())
             {
                 try
                 {
                     file.Delete();
-                    FilesDeleted++;
+                    _filesDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            foreach (DirectoryInfo folder in windowsUpdatePackagesDirectory.GetDirectories())
+            foreach (var folder in windowsUpdatePackagesDirectory.GetDirectories())
             {
                 try
                 {
                     folder.Delete(true);
-                    FoldersDeleted++;
+                    _foldersDeleted++;
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
 
-            MessageBox.Show(FilesDeleted + " files and " + FoldersDeleted + " folders deleted of total " + TotalFiles + " files!");
+            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
         }
     }
 }

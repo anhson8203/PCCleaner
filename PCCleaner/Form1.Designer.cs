@@ -39,6 +39,8 @@
             // cleanTempBtn
             // 
             this.cleanTempBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanTempBtn.CausesValidation = false;
+            this.cleanTempBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.cleanTempBtn, "cleanTempBtn");
             this.cleanTempBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanTempBtn.Name = "cleanTempBtn";
@@ -53,6 +55,8 @@
             // cleanNvidiaBtn
             // 
             this.cleanNvidiaBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanNvidiaBtn.CausesValidation = false;
+            this.cleanNvidiaBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.cleanNvidiaBtn, "cleanNvidiaBtn");
             this.cleanNvidiaBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanNvidiaBtn.Name = "cleanNvidiaBtn";
@@ -62,6 +66,8 @@
             // cleanPrefetchBtn
             // 
             this.cleanPrefetchBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanPrefetchBtn.CausesValidation = false;
+            this.cleanPrefetchBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.cleanPrefetchBtn, "cleanPrefetchBtn");
             this.cleanPrefetchBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanPrefetchBtn.Name = "cleanPrefetchBtn";
@@ -71,6 +77,8 @@
             // cleanWindowsUpdateBtn
             // 
             this.cleanWindowsUpdateBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanWindowsUpdateBtn.CausesValidation = false;
+            this.cleanWindowsUpdateBtn.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.cleanWindowsUpdateBtn, "cleanWindowsUpdateBtn");
             this.cleanWindowsUpdateBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanWindowsUpdateBtn.Name = "cleanWindowsUpdateBtn";
@@ -86,6 +94,7 @@
             this.Controls.Add(this.cleanNvidiaBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cleanTempBtn);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ResumeLayout(false);
