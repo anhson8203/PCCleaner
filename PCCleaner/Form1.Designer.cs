@@ -32,7 +32,6 @@
             this.cleanTempBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cleanNvidiaBtn = new System.Windows.Forms.Button();
-            this.cleanPrefetchBtn = new System.Windows.Forms.Button();
             this.cleanWindowsUpdateBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -45,7 +44,7 @@
             this.cleanTempBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanTempBtn.Name = "cleanTempBtn";
             this.cleanTempBtn.UseVisualStyleBackColor = false;
-            this.cleanTempBtn.Click += new System.EventHandler(this.CleanTempFolder);
+            this.cleanTempBtn.Click += new System.EventHandler(this.CleanGeneralFolder);
             // 
             // label1
             // 
@@ -63,17 +62,6 @@
             this.cleanNvidiaBtn.UseVisualStyleBackColor = false;
             this.cleanNvidiaBtn.Click += new System.EventHandler(this.CleanNvidiaCache);
             // 
-            // cleanPrefetchBtn
-            // 
-            this.cleanPrefetchBtn.BackColor = System.Drawing.SystemColors.Window;
-            this.cleanPrefetchBtn.CausesValidation = false;
-            this.cleanPrefetchBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.cleanPrefetchBtn, "cleanPrefetchBtn");
-            this.cleanPrefetchBtn.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cleanPrefetchBtn.Name = "cleanPrefetchBtn";
-            this.cleanPrefetchBtn.UseVisualStyleBackColor = false;
-            this.cleanPrefetchBtn.Click += new System.EventHandler(this.CleanPrefetch);
-            // 
             // cleanWindowsUpdateBtn
             // 
             this.cleanWindowsUpdateBtn.BackColor = System.Drawing.SystemColors.Window;
@@ -90,7 +78,6 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.cleanWindowsUpdateBtn);
-            this.Controls.Add(this.cleanPrefetchBtn);
             this.Controls.Add(this.cleanNvidiaBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cleanTempBtn);
@@ -99,14 +86,12 @@
             this.Name = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
         private System.Windows.Forms.Button cleanTempBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cleanNvidiaBtn;
-        private System.Windows.Forms.Button cleanPrefetchBtn;
         private System.Windows.Forms.Button cleanWindowsUpdateBtn;
     }
 }

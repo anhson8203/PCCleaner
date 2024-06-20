@@ -114,4 +114,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="administrative_privileges_warning" xml:space="preserve">
+    <value>This program is not running with administrative privileges. Some functions may not work properly</value>
+  </data>
+  <data name="files_deleted" xml:space="preserve">
+    <value> files and </value>
+  </data>
+  <data name="folders_deleted" xml:space="preserve">
+    <value> folders deleted of total </value>
+  </data>
+  <data name="empty_nvidia_cache" xml:space="preserve">
+    <value>NVIDIA DXCache directory is already empty!</value>
+  </data>
+  <data name="nvidia_cache_not_exist" xml:space="preserve">
+    <value>NVIDIA DXCache directory not found on this machine!</value>
+  </data>
+  <data name="empty_windows_update_directory" xml:space="preserve">
+    <value>Windows Update Packages directory is already empty!</value>
+  </data>
 </root>

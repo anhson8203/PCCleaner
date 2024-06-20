@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Principal;
 using System.Windows.Forms;
+using PCCleaner.Properties;
 
 namespace PCCleaner
 {
@@ -24,27 +25,48 @@ namespace PCCleaner
             _totalFiles = 0;
         }
 
-        private static bool IsFolderEmpty(DirectoryInfo folder) => folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
+        private static bool IsFolderEmpty(DirectoryInfo folder)
+        {
+            return folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
+        }
 
-        private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        private static bool IsAdmin()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
 
         private static void Form1_Load(object sender, EventArgs e)
         {
-            if (IsAdmin())
-            {
-                return;
-            }
-
-            MessageBox.Show("This program is not running with administrative privileges. Some functions may not work properly", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (IsAdmin()) return;
+            MessageBox.Show(Resources.administrative_privileges_warning, @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void CleanTempFolder(object sender, EventArgs e)
+        private void CleanGeneralFolder(object sender, EventArgs e)
         {
             ResetCounter();
             var userTempDirectory = new DirectoryInfo(Path.GetTempPath());
             var windowsTempDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"));
+            var windowsPrefetchDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"));
+            var windowsCrashDumpDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"));
 
-            _totalFiles = userTempDirectory.GetFiles().Length + userTempDirectory.GetDirectories().Length + windowsTempDirectory.GetFiles().Length + windowsTempDirectory.GetDirectories().Length;
+            _totalFiles = userTempDirectory.GetFiles().Length + userTempDirectory.GetDirectories().Length +
+                          windowsTempDirectory.GetFiles().Length + windowsTempDirectory.GetDirectories().Length +
+                          windowsPrefetchDirectory.GetFiles().Length +
+                          windowsPrefetchDirectory.GetDirectories().Length + windowsCrashDumpDirectory.GetFiles().Length +
+                          windowsCrashDumpDirectory.GetDirectories().Length;
+
+            foreach (var file in windowsPrefetchDirectory.GetFiles())
+            {
+                try
+                {
+                    file.Delete();
+                    _filesDeleted++;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
 
             foreach (var file in userTempDirectory.GetFiles())
             {
@@ -58,8 +80,21 @@ namespace PCCleaner
                     // ignored
                 }
             }
-            
+
             foreach (var file in windowsTempDirectory.GetFiles())
+            {
+                try
+                {
+                    file.Delete();
+                    _filesDeleted++;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
+            foreach (var file in windowsCrashDumpDirectory.GetFiles())
             {
                 try
                 {
@@ -84,7 +119,7 @@ namespace PCCleaner
                     // ignored
                 }
             }
-            
+
             foreach (var folder in windowsTempDirectory.GetDirectories())
             {
                 try
@@ -97,103 +132,21 @@ namespace PCCleaner
                     // ignored
                 }
             }
-
-            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
-        }
-
-        private void CleanNvidiaCache(object sender, EventArgs e)
-        {
-            ResetCounter();
-            var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
-            var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
             
-            if (!Directory.Exists(nvidiaCachePathNew))
-            {
-                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathOld);
-
-                if (IsFolderEmpty(nvidiaCacheDirectory))
-                {
-                    MessageBox.Show("NVIDIA DXCache directory is already empty!");
-                    return;
-                }
-
-                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
-
-                foreach (var file in nvidiaCacheDirectory.GetFiles())
-                {
-                    try
-                    {
-                        file.Delete();
-                        _filesDeleted++;
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-
-                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
-            }
-            else if (Directory.Exists(nvidiaCachePathNew))
-            {
-                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
-
-                if (IsFolderEmpty(nvidiaCacheDirectory))
-                {
-                    MessageBox.Show("NVIDIA DXCache directory is already empty!");
-                    return;
-                }
-
-                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
-
-                foreach (var file in nvidiaCacheDirectory.GetFiles())
-                {
-                    try
-                    {
-                        file.Delete();
-                        _filesDeleted++;
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-
-                MessageBox.Show(_filesDeleted + " files deleted of total " + _totalFiles);
-            }
-            else if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
-            {
-                MessageBox.Show("NVIDIA DXCache directory not found on this machine!");
-            }
-        }
-
-        private void CleanPrefetch(object sender, EventArgs e)
-        {
-            ResetCounter();
-            var prefetchDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"));
-
-            if (IsFolderEmpty(prefetchDirectory))
-            {
-                MessageBox.Show("Prefetch directory is already empty!");
-                return;
-            }
-
-            _totalFiles = prefetchDirectory.GetFiles().Length;
-
-            foreach (var file in prefetchDirectory.GetFiles())
+            foreach (var folder in windowsPrefetchDirectory.GetDirectories())
             {
                 try
                 {
-                    file.Delete();
-                    _filesDeleted++;
+                    folder.Delete(true);
+                    _foldersDeleted++;
                 }
                 catch
                 {
                     // ignored
                 }
             }
-
-            foreach (var folder in prefetchDirectory.GetDirectories())
+            
+            foreach (var folder in windowsCrashDumpDirectory.GetDirectories())
             {
                 try
                 {
@@ -206,7 +159,73 @@ namespace PCCleaner
                 }
             }
 
-            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+        }
+
+        private void CleanNvidiaCache(object sender, EventArgs e)
+        {
+            ResetCounter();
+            var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
+            var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
+
+            if (!Directory.Exists(nvidiaCachePathNew))
+            {
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathOld);
+
+                if (IsFolderEmpty(nvidiaCacheDirectory))
+                {
+                    MessageBox.Show(Resources.empty_nvidia_cache);
+                    return;
+                }
+
+                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
+
+                foreach (var file in nvidiaCacheDirectory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles);
+            }
+            else if (Directory.Exists(nvidiaCachePathNew))
+            {
+                var nvidiaCacheDirectory = new DirectoryInfo(nvidiaCachePathNew);
+
+                if (IsFolderEmpty(nvidiaCacheDirectory))
+                {
+                    MessageBox.Show(Resources.empty_nvidia_cache);
+                    return;
+                }
+
+                _totalFiles = nvidiaCacheDirectory.GetFiles().Length;
+
+                foreach (var file in nvidiaCacheDirectory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles);
+            }
+            else if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
+            {
+                MessageBox.Show(Resources.nvidia_cache_not_exist);
+            }
         }
 
         private void CleanWindowsUpdatePackages(object sender, EventArgs e)
@@ -216,11 +235,12 @@ namespace PCCleaner
 
             if (IsFolderEmpty(windowsUpdatePackagesDirectory))
             {
-                MessageBox.Show("Windows Update Packages directory is already empty!");
+                MessageBox.Show(Resources.empty_windows_update_directory);
                 return;
             }
 
-            _totalFiles = windowsUpdatePackagesDirectory.GetFiles().Length + windowsUpdatePackagesDirectory.GetDirectories().Length;
+            _totalFiles = windowsUpdatePackagesDirectory.GetFiles().Length +
+                          windowsUpdatePackagesDirectory.GetDirectories().Length;
 
             foreach (var file in windowsUpdatePackagesDirectory.GetFiles())
             {
@@ -248,7 +268,7 @@ namespace PCCleaner
                 }
             }
 
-            MessageBox.Show(_filesDeleted + " files and " + _foldersDeleted + " folders deleted of total " + _totalFiles);
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
         }
     }
 }
