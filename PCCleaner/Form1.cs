@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
 using System.Windows.Forms;
@@ -17,6 +18,12 @@ namespace PCCleaner
             InitializeComponent();
             Load += Form1_Load;
         }
+        
+        private static void Form1_Load(object sender, EventArgs e)
+        {
+            if (IsAdmin()) return;
+            MessageBox.Show(Resources.administrative_privileges_warning, @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
 
         private void ResetCounter()
         {
@@ -25,141 +32,114 @@ namespace PCCleaner
             _totalFiles = 0;
         }
 
-        private static bool IsFolderEmpty(DirectoryInfo folder)
-        {
-            return folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
-        }
+        private static bool IsFolderEmpty(DirectoryInfo folder) => folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0;
 
-        private static bool IsAdmin()
-        {
-            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        private static void Form1_Load(object sender, EventArgs e)
-        {
-            if (IsAdmin()) return;
-            MessageBox.Show(Resources.administrative_privileges_warning, @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
+        private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
         private void CleanGeneralFolder(object sender, EventArgs e)
         {
             ResetCounter();
-            var userTempDirectory = new DirectoryInfo(Path.GetTempPath());
-            var windowsTempDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"));
-            var windowsPrefetchDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"));
-            var windowsCrashDumpDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"));
-
-            _totalFiles = userTempDirectory.GetFiles().Length + userTempDirectory.GetDirectories().Length +
-                          windowsTempDirectory.GetFiles().Length + windowsTempDirectory.GetDirectories().Length +
-                          windowsPrefetchDirectory.GetFiles().Length +
-                          windowsPrefetchDirectory.GetDirectories().Length + windowsCrashDumpDirectory.GetFiles().Length +
-                          windowsCrashDumpDirectory.GetDirectories().Length;
-
-            foreach (var file in windowsPrefetchDirectory.GetFiles())
-            {
-                try
-                {
-                    file.Delete();
-                    _filesDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-
-            foreach (var file in userTempDirectory.GetFiles())
-            {
-                try
-                {
-                    file.Delete();
-                    _filesDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-
-            foreach (var file in windowsTempDirectory.GetFiles())
-            {
-                try
-                {
-                    file.Delete();
-                    _filesDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-
-            foreach (var file in windowsCrashDumpDirectory.GetFiles())
-            {
-                try
-                {
-                    file.Delete();
-                    _filesDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-
-            foreach (var folder in userTempDirectory.GetDirectories())
-            {
-                try
-                {
-                    folder.Delete(true);
-                    _foldersDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-
-            foreach (var folder in windowsTempDirectory.GetDirectories())
-            {
-                try
-                {
-                    folder.Delete(true);
-                    _foldersDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
             
-            foreach (var folder in windowsPrefetchDirectory.GetDirectories())
+            var directories = new List<DirectoryInfo>
             {
-                try
-                {
-                    folder.Delete(true);
-                    _foldersDeleted++;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-            
-            foreach (var folder in windowsCrashDumpDirectory.GetDirectories())
+                new DirectoryInfo(Path.GetTempPath()),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
+            };
+
+            foreach (var directory in directories)
             {
-                try
+                _totalFiles += directory.GetFiles().Length + directory.GetDirectories().Length;
+
+                foreach (var file in directory.GetFiles())
                 {
-                    folder.Delete(true);
-                    _foldersDeleted++;
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
-                catch
+
+                foreach (var folder in directory.GetDirectories())
                 {
-                    // ignored
+                    try
+                    {
+                        folder.Delete(true);
+                        _foldersDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
             }
 
             MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+        }
+        
+        private void CleanUpDiscord(object sender, EventArgs e)
+        {
+            ResetCounter();
+            var directories = new List<DirectoryInfo>
+            {
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "blob_storage")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Code Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "DawnCache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "GPUCache"))
+            };
+            
+            foreach (var directory in directories)
+            {
+                if (!directory.Exists)
+                {
+                    MessageBox.Show(Resources.discord_not_installed);
+                    return;
+                }
+                
+                _totalFiles += directory.GetFiles().Length + directory.GetDirectories().Length;
+
+                foreach (var file in directory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                foreach (var folder in directory.GetDirectories())
+                {
+                    try
+                    {
+                        folder.Delete(true);
+                        _foldersDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+            }
+            
+            if (_totalFiles == 0)
+            {
+                MessageBox.Show(Resources.empty_discord);
+            }
+            else
+            {
+                MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+            }
         }
 
         private void CleanNvidiaCache(object sender, EventArgs e)

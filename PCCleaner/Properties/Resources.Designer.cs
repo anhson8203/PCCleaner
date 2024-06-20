@@ -69,6 +69,24 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discord is not installed on this machine..
+        /// </summary>
+        internal static string discord_not_installed {
+            get {
+                return ResourceManager.GetString("discord_not_installed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord cache is already empty..
+        /// </summary>
+        internal static string empty_discord {
+            get {
+                return ResourceManager.GetString("empty_discord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to NVIDIA DXCache directory is already empty!.
         /// </summary>
         internal static string empty_nvidia_cache {

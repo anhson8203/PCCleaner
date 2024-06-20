@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cleanNvidiaBtn = new System.Windows.Forms.Button();
             this.cleanWindowsUpdateBtn = new System.Windows.Forms.Button();
+            this.cleanDiscordBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cleanTempBtn
@@ -73,10 +74,22 @@
             this.cleanWindowsUpdateBtn.UseVisualStyleBackColor = false;
             this.cleanWindowsUpdateBtn.Click += new System.EventHandler(this.CleanWindowsUpdatePackages);
             // 
+            // cleanDiscordBtn
+            // 
+            this.cleanDiscordBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanDiscordBtn.CausesValidation = false;
+            this.cleanDiscordBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.cleanDiscordBtn, "cleanDiscordBtn");
+            this.cleanDiscordBtn.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.cleanDiscordBtn.Name = "cleanDiscordBtn";
+            this.cleanDiscordBtn.UseVisualStyleBackColor = false;
+            this.cleanDiscordBtn.Click += new System.EventHandler(this.CleanUpDiscord);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cleanDiscordBtn);
             this.Controls.Add(this.cleanWindowsUpdateBtn);
             this.Controls.Add(this.cleanNvidiaBtn);
             this.Controls.Add(this.label1);
@@ -87,6 +100,8 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button cleanDiscordBtn;
 
         #endregion
         private System.Windows.Forms.Button cleanTempBtn;

@@ -132,4 +132,10 @@
   <data name="empty_windows_update_directory" xml:space="preserve">
     <value>Windows Update Packages directory is already empty!</value>
   </data>
+  <data name="empty_discord" xml:space="preserve">
+    <value>Discord cache is already empty.</value>
+  </data>
+  <data name="discord_not_installed" xml:space="preserve">
+    <value>Discord is not installed on this machine.</value>
+  </data>
 </root>
