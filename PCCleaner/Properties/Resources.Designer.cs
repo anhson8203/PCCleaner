@@ -96,6 +96,15 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steam cache is already empty.
+        /// </summary>
+        internal static string empty_steam_cache {
+            get {
+                return ResourceManager.GetString("empty_steam_cache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Windows Update Packages directory is already empty!.
         /// </summary>
         internal static string empty_windows_update_directory {
@@ -128,6 +137,15 @@ namespace PCCleaner.Properties {
         internal static string nvidia_cache_not_exist {
             get {
                 return ResourceManager.GetString("nvidia_cache_not_exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam is not installed on this machine..
+        /// </summary>
+        internal static string steam_not_installed {
+            get {
+                return ResourceManager.GetString("steam_not_installed", resourceCulture);
             }
         }
     }

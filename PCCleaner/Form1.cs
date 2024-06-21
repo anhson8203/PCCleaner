@@ -80,26 +80,28 @@ namespace PCCleaner
                 }
             }
 
-            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        
-        private void CleanUpDiscord(object sender, EventArgs e)
+
+        private void CleanUpSteam(object sender, EventArgs e)
         {
             ResetCounter();
             var directories = new List<DirectoryInfo>
             {
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "blob_storage")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Cache")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Code Cache")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "DawnCache")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "GPUCache"))
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "blob_storage")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "Code Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "DawnCache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "GPUCache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache", "Service Worker", "CacheStorage"))
+                // new DirectoryInfo(Path.Combine("C:", "Program Files (x86)", "Steam"))
             };
             
             foreach (var directory in directories)
             {
                 if (!directory.Exists)
                 {
-                    MessageBox.Show(Resources.discord_not_installed);
+                    MessageBox.Show(Resources.steam_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 
@@ -134,12 +136,69 @@ namespace PCCleaner
             
             if (_totalFiles == 0)
             {
-                MessageBox.Show(Resources.empty_discord);
+                MessageBox.Show(Resources.empty_steam_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-            else
+            
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        
+        private void CleanUpDiscord(object sender, EventArgs e)
+        {
+            ResetCounter();
+            var directories = new List<DirectoryInfo>
             {
-                MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "blob_storage")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "Code Cache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "DawnCache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord", "GPUCache"))
+            };
+            
+            foreach (var directory in directories)
+            {
+                if (!directory.Exists)
+                {
+                    MessageBox.Show(Resources.discord_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                
+                _totalFiles += directory.GetFiles().Length + directory.GetDirectories().Length;
+
+                foreach (var file in directory.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                        _filesDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                foreach (var folder in directory.GetDirectories())
+                {
+                    try
+                    {
+                        folder.Delete(true);
+                        _foldersDeleted++;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
             }
+            
+            if (_totalFiles == 0)
+            {
+                MessageBox.Show(Resources.empty_discord, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void CleanNvidiaCache(object sender, EventArgs e)
@@ -154,7 +213,7 @@ namespace PCCleaner
 
                 if (IsFolderEmpty(nvidiaCacheDirectory))
                 {
-                    MessageBox.Show(Resources.empty_nvidia_cache);
+                    MessageBox.Show(Resources.empty_nvidia_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -173,7 +232,7 @@ namespace PCCleaner
                     }
                 }
 
-                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles);
+                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (Directory.Exists(nvidiaCachePathNew))
             {
@@ -181,7 +240,7 @@ namespace PCCleaner
 
                 if (IsFolderEmpty(nvidiaCacheDirectory))
                 {
-                    MessageBox.Show(Resources.empty_nvidia_cache);
+                    MessageBox.Show(Resources.empty_nvidia_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -200,11 +259,11 @@ namespace PCCleaner
                     }
                 }
 
-                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles);
+                MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
             {
-                MessageBox.Show(Resources.nvidia_cache_not_exist);
+                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -215,12 +274,11 @@ namespace PCCleaner
 
             if (IsFolderEmpty(windowsUpdatePackagesDirectory))
             {
-                MessageBox.Show(Resources.empty_windows_update_directory);
+                MessageBox.Show(Resources.empty_windows_update_directory, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            _totalFiles = windowsUpdatePackagesDirectory.GetFiles().Length +
-                          windowsUpdatePackagesDirectory.GetDirectories().Length;
+            _totalFiles = windowsUpdatePackagesDirectory.GetFiles().Length + windowsUpdatePackagesDirectory.GetDirectories().Length;
 
             foreach (var file in windowsUpdatePackagesDirectory.GetFiles())
             {
@@ -248,7 +306,7 @@ namespace PCCleaner
                 }
             }
 
-            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles);
+            MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

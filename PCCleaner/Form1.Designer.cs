@@ -34,6 +34,7 @@
             this.cleanNvidiaBtn = new System.Windows.Forms.Button();
             this.cleanWindowsUpdateBtn = new System.Windows.Forms.Button();
             this.cleanDiscordBtn = new System.Windows.Forms.Button();
+            this.cleanSteamBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cleanTempBtn
@@ -85,10 +86,22 @@
             this.cleanDiscordBtn.UseVisualStyleBackColor = false;
             this.cleanDiscordBtn.Click += new System.EventHandler(this.CleanUpDiscord);
             // 
+            // cleanSteamBtn
+            // 
+            this.cleanSteamBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanSteamBtn.CausesValidation = false;
+            this.cleanSteamBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.cleanSteamBtn, "cleanSteamBtn");
+            this.cleanSteamBtn.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.cleanSteamBtn.Name = "cleanSteamBtn";
+            this.cleanSteamBtn.UseVisualStyleBackColor = false;
+            this.cleanSteamBtn.Click += new System.EventHandler(this.CleanUpSteam);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cleanSteamBtn);
             this.Controls.Add(this.cleanDiscordBtn);
             this.Controls.Add(this.cleanWindowsUpdateBtn);
             this.Controls.Add(this.cleanNvidiaBtn);
@@ -100,6 +113,8 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button cleanSteamBtn;
 
         private System.Windows.Forms.Button cleanDiscordBtn;
 

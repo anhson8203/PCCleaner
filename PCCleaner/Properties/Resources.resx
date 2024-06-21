@@ -138,4 +138,10 @@
   <data name="discord_not_installed" xml:space="preserve">
     <value>Discord is not installed on this machine.</value>
   </data>
+  <data name="steam_not_installed" xml:space="preserve">
+    <value>Steam is not installed on this machine.</value>
+  </data>
+  <data name="empty_steam_cache" xml:space="preserve">
+    <value>Steam cache is already empty</value>
+  </data>
 </root>
