@@ -90,21 +90,22 @@ namespace PCCleaner
         {
             ResetCounter();
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache");
-            var directories = new List<DirectoryInfo>
-            {
-                new DirectoryInfo(Path.Combine("C:", "Program Files (x86)", "Steam", "appcache", "httpcache")),
-                new DirectoryInfo(Path.Combine(basePath, "blob_storage")),
-                new DirectoryInfo(Path.Combine(basePath, "Cache")),
-                new DirectoryInfo(Path.Combine(basePath, "Code Cache")),
-                new DirectoryInfo(Path.Combine(basePath, "DawnCache")),
-                new DirectoryInfo(Path.Combine(basePath, "GPUCache"))
-            };
             
             if (!Directory.Exists(basePath))
             {
                 MessageBox.Show(Resources.steam_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            
+            var directories = new List<DirectoryInfo>
+            {
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "appcache", "httpcache")),
+                new DirectoryInfo(Path.Combine(basePath, "blob_storage")),
+                new DirectoryInfo(Path.Combine(basePath, "Cache")),
+                new DirectoryInfo(Path.Combine(basePath, "Code Cache")),
+                new DirectoryInfo(Path.Combine(basePath, "DawnCache")),
+                new DirectoryInfo(Path.Combine(basePath, "GPUCache"))
+            };
 
             foreach (var directory in directories)
             {
