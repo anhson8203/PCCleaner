@@ -69,7 +69,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discord is not installed on this machine..
+        ///   Looks up a localized string similar to Discord is not installed on this machine.
         /// </summary>
         internal static string discord_not_installed {
             get {
@@ -78,7 +78,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discord cache is already empty..
+        ///   Looks up a localized string similar to Discord cache is already empty.
         /// </summary>
         internal static string empty_discord {
             get {
@@ -87,7 +87,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NVIDIA DXCache directory is already empty!.
+        ///   Looks up a localized string similar to NVIDIA DXCache directory is already empty.
         /// </summary>
         internal static string empty_nvidia_cache {
             get {
@@ -105,7 +105,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Windows Update Packages directory is already empty!.
+        ///   Looks up a localized string similar to Windows Update Packages directory is already empty.
         /// </summary>
         internal static string empty_windows_update_directory {
             get {
@@ -132,7 +132,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NVIDIA DXCache directory not found on this machine!.
+        ///   Looks up a localized string similar to NVIDIA DXCache directory not found on this machine.
         /// </summary>
         internal static string nvidia_cache_not_exist {
             get {
@@ -141,7 +141,7 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Steam is not installed on this machine..
+        ///   Looks up a localized string similar to Steam is not installed on this machine.
         /// </summary>
         internal static string steam_not_installed {
             get {

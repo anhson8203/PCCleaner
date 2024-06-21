@@ -97,18 +97,17 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(basePath, "Cache")),
                 new DirectoryInfo(Path.Combine(basePath, "Code Cache")),
                 new DirectoryInfo(Path.Combine(basePath, "DawnCache")),
-                new DirectoryInfo(Path.Combine(basePath, "GPUCache")),
-                new DirectoryInfo(Path.Combine(basePath, "Service Worker"))
+                new DirectoryInfo(Path.Combine(basePath, "GPUCache"))
             };
+            
+            if (!Directory.Exists(basePath))
+            {
+                MessageBox.Show(Resources.steam_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
             foreach (var directory in directories)
             {
-                if (!directories[0].Exists)
-                {
-                    MessageBox.Show(Resources.steam_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
                 _totalFiles += directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count();
 
                 Parallel.ForEach(directory.EnumerateFiles(), file =>
@@ -159,15 +158,15 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(basePath, "DawnCache")),
                 new DirectoryInfo(Path.Combine(basePath, "GPUCache"))
             };
-
+            
+            if (!Directory.Exists(basePath))
+            {
+                MessageBox.Show(Resources.discord_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            
             foreach (var directory in directories)
             {
-                if (!directories[0].Exists && !directories[1].Exists)
-                {
-                    MessageBox.Show(Resources.discord_not_installed, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
                 _totalFiles += directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count();
 
                 Parallel.ForEach(directory.EnumerateFiles(), file =>
@@ -211,6 +210,12 @@ namespace PCCleaner
             ResetCounter();
             var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
             var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
+            
+            if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
+            {
+                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
             var directories = new List<DirectoryInfo>
             {
@@ -220,12 +225,6 @@ namespace PCCleaner
 
             foreach (var directory in directories)
             {
-                if (!directory.Exists)
-                {
-                    MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    continue;
-                }
-
                 if (IsFolderEmpty(directory))
                 {
                     MessageBox.Show(Resources.empty_nvidia_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
