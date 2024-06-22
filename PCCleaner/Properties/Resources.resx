@@ -123,17 +123,8 @@
   <data name="folders_deleted" xml:space="preserve">
     <value> folders deleted of total </value>
   </data>
-  <data name="empty_nvidia_cache" xml:space="preserve">
-    <value>NVIDIA DXCache directory is already empty</value>
-  </data>
   <data name="nvidia_cache_not_exist" xml:space="preserve">
     <value>NVIDIA DXCache directory not found on this machine</value>
-  </data>
-  <data name="empty_windows_update_directory" xml:space="preserve">
-    <value>Windows Update Packages directory is already empty</value>
-  </data>
-  <data name="empty_discord" xml:space="preserve">
-    <value>Discord cache is already empty</value>
   </data>
   <data name="discord_not_installed" xml:space="preserve">
     <value>Discord is not installed on this machine</value>
@@ -141,7 +132,10 @@
   <data name="steam_not_installed" xml:space="preserve">
     <value>Steam is not installed on this machine</value>
   </data>
-  <data name="empty_steam_cache" xml:space="preserve">
-    <value>Steam cache is already empty</value>
+  <data name="empty_folder" xml:space="preserve">
+    <value>Cache folder is already empty</value>
+  </data>
+  <data name="admin_required" xml:space="preserve">
+    <value>This feature requires administrator priviledges</value>
   </data>
 </root>

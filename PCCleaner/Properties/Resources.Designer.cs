@@ -60,6 +60,15 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This feature requires administrator priviledges.
+        /// </summary>
+        internal static string admin_required {
+            get {
+                return ResourceManager.GetString("admin_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This program is not running with administrative privileges. Some functions may not work properly.
         /// </summary>
         internal static string administrative_privileges_warning {
@@ -78,38 +87,11 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discord cache is already empty.
+        ///   Looks up a localized string similar to Cache folder is already empty.
         /// </summary>
-        internal static string empty_discord {
+        internal static string empty_folder {
             get {
-                return ResourceManager.GetString("empty_discord", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NVIDIA DXCache directory is already empty.
-        /// </summary>
-        internal static string empty_nvidia_cache {
-            get {
-                return ResourceManager.GetString("empty_nvidia_cache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam cache is already empty.
-        /// </summary>
-        internal static string empty_steam_cache {
-            get {
-                return ResourceManager.GetString("empty_steam_cache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Windows Update Packages directory is already empty.
-        /// </summary>
-        internal static string empty_windows_update_directory {
-            get {
-                return ResourceManager.GetString("empty_windows_update_directory", resourceCulture);
+                return ResourceManager.GetString("empty_folder", resourceCulture);
             }
         }
         
