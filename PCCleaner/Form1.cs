@@ -209,44 +209,38 @@ namespace PCCleaner
         private void CleanNvidiaCache(object sender, EventArgs e)
         {
             ResetCounter();
-            var nvidiaCachePathNew = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache");
-            var nvidiaCachePathOld = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache");
+            var nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"));
             
-            if (!Directory.Exists(nvidiaCachePathNew) && !Directory.Exists(nvidiaCachePathOld))
+            if (!nvidiaCacheDirectory.Exists)
             {
-                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"));
+                if (!nvidiaCacheDirectory.Exists)
+                {
+                    MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            
+            if (IsFolderEmpty(nvidiaCacheDirectory))
+            {
+                MessageBox.Show(Resources.empty_nvidia_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var directories = new List<DirectoryInfo>
-            {
-                new DirectoryInfo(nvidiaCachePathNew),
-                new DirectoryInfo(nvidiaCachePathOld)
-            };
+            _totalFiles += nvidiaCacheDirectory.EnumerateFiles().Count();
 
-            foreach (var directory in directories)
+            Parallel.ForEach(nvidiaCacheDirectory.EnumerateFiles(), file =>
             {
-                if (IsFolderEmpty(directory))
+                try
                 {
-                    MessageBox.Show(Resources.empty_nvidia_cache, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    file.Delete();
+                    Interlocked.Increment(ref _filesDeleted);
                 }
-
-                _totalFiles += directory.EnumerateFiles().Count();
-
-                Parallel.ForEach(directory.EnumerateFiles(), file =>
+                catch
                 {
-                    try
-                    {
-                        file.Delete();
-                        Interlocked.Increment(ref _filesDeleted);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                });
-            }
+                    // ignored
+                }
+            });
 
             MessageBox.Show(_filesDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
