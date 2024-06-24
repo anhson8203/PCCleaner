@@ -41,7 +41,10 @@ namespace PCCleaner
         {
             foreach (var directory in directories)
             {
-                Parallel.ForEach(directory.EnumerateFiles(), file =>
+                var files = directory.EnumerateFiles().ToList();
+                var folders = directory.EnumerateDirectories().ToList();
+                
+                Parallel.ForEach(files, file =>
                 {
                     try
                     {
@@ -54,7 +57,7 @@ namespace PCCleaner
                     }
                 });
 
-                Parallel.ForEach(directory.EnumerateDirectories(), folder =>
+                Parallel.ForEach(folders, folder =>
                 {
                     try
                     {
