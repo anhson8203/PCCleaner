@@ -39,12 +39,14 @@ namespace PCCleaner
         
         private void ClearCache(List<DirectoryInfo> directories, int totalFiles)
         {
+            var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+
             foreach (var directory in directories)
             {
                 var files = directory.EnumerateFiles().ToList();
                 var folders = directory.EnumerateDirectories().ToList();
-                
-                Parallel.ForEach(files, file =>
+
+                Parallel.ForEach(files, options, file =>
                 {
                     try
                     {
@@ -57,7 +59,7 @@ namespace PCCleaner
                     }
                 });
 
-                Parallel.ForEach(folders, folder =>
+                Parallel.ForEach(folders, options, folder =>
                 {
                     try
                     {
@@ -70,6 +72,10 @@ namespace PCCleaner
                     }
                 });
             }
+            
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
             
             if (totalFiles == 0)
             {
