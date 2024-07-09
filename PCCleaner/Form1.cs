@@ -39,6 +39,12 @@ namespace PCCleaner
         
         private void ClearCache(List<DirectoryInfo> directories, int totalFiles)
         {
+            if (totalFiles == 0)
+            {
+                MessageBox.Show(Resources.empty_folder, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            
             var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
             foreach (var directory in directories)
@@ -76,12 +82,6 @@ namespace PCCleaner
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
-            
-            if (totalFiles == 0)
-            {
-                MessageBox.Show(Resources.empty_folder, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
             MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
