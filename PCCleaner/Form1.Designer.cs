@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.cleanTempBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.cleanNvidiaBtn = new System.Windows.Forms.Button();
+            this.cleanShaderBtn = new System.Windows.Forms.Button();
             this.cleanWindowsUpdateBtn = new System.Windows.Forms.Button();
             this.cleanDiscordBtn = new System.Windows.Forms.Button();
             this.cleanSteamBtn = new System.Windows.Forms.Button();
@@ -53,16 +53,16 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // cleanNvidiaBtn
+            // cleanShaderBtn
             // 
-            this.cleanNvidiaBtn.BackColor = System.Drawing.SystemColors.Window;
-            this.cleanNvidiaBtn.CausesValidation = false;
-            this.cleanNvidiaBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.cleanNvidiaBtn, "cleanNvidiaBtn");
-            this.cleanNvidiaBtn.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cleanNvidiaBtn.Name = "cleanNvidiaBtn";
-            this.cleanNvidiaBtn.UseVisualStyleBackColor = false;
-            this.cleanNvidiaBtn.Click += new System.EventHandler(this.CleanNvidiaCache);
+            this.cleanShaderBtn.BackColor = System.Drawing.SystemColors.Window;
+            this.cleanShaderBtn.CausesValidation = false;
+            this.cleanShaderBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.cleanShaderBtn, "cleanShaderBtn");
+            this.cleanShaderBtn.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.cleanShaderBtn.Name = "cleanShaderBtn";
+            this.cleanShaderBtn.UseVisualStyleBackColor = false;
+            this.cleanShaderBtn.Click += new System.EventHandler(this.CleanShaderCache);
             // 
             // cleanWindowsUpdateBtn
             // 
@@ -104,7 +104,7 @@
             this.Controls.Add(this.cleanSteamBtn);
             this.Controls.Add(this.cleanDiscordBtn);
             this.Controls.Add(this.cleanWindowsUpdateBtn);
-            this.Controls.Add(this.cleanNvidiaBtn);
+            this.Controls.Add(this.cleanShaderBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cleanTempBtn);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -121,7 +121,7 @@
         #endregion
         private System.Windows.Forms.Button cleanTempBtn;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button cleanNvidiaBtn;
+        private System.Windows.Forms.Button cleanShaderBtn;
         private System.Windows.Forms.Button cleanWindowsUpdateBtn;
     }
 }

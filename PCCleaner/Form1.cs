@@ -12,6 +12,8 @@ namespace PCCleaner
 {
     public partial class Form1 : Form
     {
+        private const string Caption = "PC Cleaner";
+
         private int _filesDeleted;
         private int _foldersDeleted;
         private int _totalFiles;
@@ -41,7 +43,7 @@ namespace PCCleaner
         {
             if (totalFiles == 0)
             {
-                MessageBox.Show(Resources.empty_folder, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.empty_folder, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             
@@ -59,9 +61,9 @@ namespace PCCleaner
                         file.Delete();
                         Interlocked.Increment(ref _filesDeleted);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        // ignored
+                        Console.WriteLine("Error deleting file " + file.Name + " error: " + e.Message);
                     }
                 });
 
@@ -72,9 +74,9 @@ namespace PCCleaner
                         folder.Delete(true);
                         Interlocked.Increment(ref _foldersDeleted);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        // ignored
+                        Console.WriteLine("Error deleting file " + folder.Name + " error: " + e.Message);
                     }
                 });
             }
@@ -90,7 +92,7 @@ namespace PCCleaner
         {
             if (!IsAdmin())
             {
-                MessageBox.Show(Resources.admin_required, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.admin_required, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             
@@ -101,8 +103,7 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"))
             };
             
             _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
@@ -158,7 +159,7 @@ namespace PCCleaner
             ClearCache(discordDirectories, _totalFiles);
         }
         
-        private void CleanNvidiaCache(object sender, EventArgs e)
+        private void CleanShaderCache(object sender, EventArgs e)
         {
             var nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"));
             
@@ -167,21 +168,27 @@ namespace PCCleaner
                 nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"));
                 if (!nvidiaCacheDirectory.Exists)
                 {
-                    MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.nvidia_cache_not_exist, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
             }
             
+            var shaderCacheDirectories = new List<DirectoryInfo>
+            {
+                nvidiaCacheDirectory,
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
+            };
+            
             ResetCounter();
             _totalFiles = nvidiaCacheDirectory.EnumerateFiles().Count() + nvidiaCacheDirectory.EnumerateDirectories().Count();
-            ClearCache(new List<DirectoryInfo> { nvidiaCacheDirectory }, _totalFiles);
+            ClearCache(shaderCacheDirectories, _totalFiles);
         }
         
         private void CleanWindowsUpdatePackages(object sender, EventArgs e)
         {
             if (!IsAdmin())
             {
-                MessageBox.Show(Resources.admin_required, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.admin_required, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             
