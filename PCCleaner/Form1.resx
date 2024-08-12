@@ -126,7 +126,7 @@
     <value>Times New Roman, 14.25pt</value>
   </data>
   <data name="cleanTempBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 55</value>
+    <value>133, 61</value>
   </data>
   <data name="cleanTempBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 44</value>
@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cleanTempBtn.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -157,7 +157,7 @@
     <value>Microsoft Sans Serif, 24.75pt, style=Bold</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 10</value>
+    <value>104, 9</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 38</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="cleanShaderBtn.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -190,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="cleanShaderBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 205</value>
+    <value>133, 161</value>
   </data>
   <data name="cleanShaderBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 44</value>
@@ -211,39 +211,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cleanShaderBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Times New Roman, 14.25pt</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 255</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 44</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="cleanWindowsUpdateBtn.Text" xml:space="preserve">
-    <value>Windows Update</value>
-  </data>
-  <data name="&gt;&gt;cleanWindowsUpdateBtn.Name" xml:space="preserve">
-    <value>cleanWindowsUpdateBtn</value>
-  </data>
-  <data name="&gt;&gt;cleanWindowsUpdateBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cleanWindowsUpdateBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;cleanWindowsUpdateBtn.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="cleanDiscordBtn.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
@@ -256,7 +223,7 @@
     <value>NoControl</value>
   </data>
   <data name="cleanDiscordBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 155</value>
+    <value>133, 211</value>
   </data>
   <data name="cleanDiscordBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 44</value>
@@ -289,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="cleanSteamBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 105</value>
+    <value>133, 111</value>
   </data>
   <data name="cleanSteamBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 44</value>
@@ -319,7 +286,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>484, 311</value>
+    <value>448, 266</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

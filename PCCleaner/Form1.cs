@@ -48,12 +48,12 @@ namespace PCCleaner
             }
             
             var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
-
+            
             foreach (var directory in directories)
             {
                 var files = directory.EnumerateFiles().ToList();
                 var folders = directory.EnumerateDirectories().ToList();
-
+                
                 Parallel.ForEach(files, options, file =>
                 {
                     try
@@ -63,10 +63,10 @@ namespace PCCleaner
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Error deleting file " + file.Name + " error: " + e.Message);
+                        Console.WriteLine(@"Error deleting file " + file.FullName + @" error: " + e.Message);
                     }
                 });
-
+                
                 Parallel.ForEach(folders, options, folder =>
                 {
                     try
@@ -76,7 +76,7 @@ namespace PCCleaner
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Error deleting file " + folder.Name + " error: " + e.Message);
+                        Console.WriteLine(@"Error deleting file " + folder.FullName + @" error: " + e.Message);
                     }
                 });
             }
@@ -84,11 +84,11 @@ namespace PCCleaner
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
-
+            
             MessageBox.Show(_filesDeleted + Resources.files_deleted + _foldersDeleted + Resources.folders_deleted + _totalFiles, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-        private void CleanGeneralFolder(object sender, EventArgs e)
+        
+        private void ClearWindows(object sender, EventArgs e)
         {
             if (!IsAdmin())
             {
@@ -103,14 +103,15 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"))
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"))
             };
             
             _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(generalDirectories, _totalFiles);
         }
         
-        private void CleanUpSteam(object sender, EventArgs e)
+        private void ClearSteam(object sender, EventArgs e)
         {
             var baseSteamPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Steam", "htmlcache");
             
@@ -135,7 +136,7 @@ namespace PCCleaner
             ClearCache(steamDirectories, _totalFiles);
         }
         
-        private void CleanUpDiscord(object sender, EventArgs e)
+        private void ClearDiscord(object sender, EventArgs e)
         {
             var baseDiscordPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord");
             
@@ -159,7 +160,7 @@ namespace PCCleaner
             ClearCache(discordDirectories, _totalFiles);
         }
         
-        private void CleanShaderCache(object sender, EventArgs e)
+        private void ClearShader(object sender, EventArgs e)
         {
             var nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"));
             
@@ -182,21 +183,6 @@ namespace PCCleaner
             ResetCounter();
             _totalFiles = nvidiaCacheDirectory.EnumerateFiles().Count() + nvidiaCacheDirectory.EnumerateDirectories().Count();
             ClearCache(shaderCacheDirectories, _totalFiles);
-        }
-        
-        private void CleanWindowsUpdatePackages(object sender, EventArgs e)
-        {
-            if (!IsAdmin())
-            {
-                MessageBox.Show(Resources.admin_required, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            
-            ResetCounter();
-            var windowsUpdatePackagesDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"));
-
-            _totalFiles = windowsUpdatePackagesDirectory.EnumerateFiles().Count() + windowsUpdatePackagesDirectory.EnumerateDirectories().Count();
-            ClearCache(new List<DirectoryInfo> { windowsUpdatePackagesDirectory }, _totalFiles);
         }
     }
 }

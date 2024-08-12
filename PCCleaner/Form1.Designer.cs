@@ -32,7 +32,6 @@
             this.cleanTempBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cleanShaderBtn = new System.Windows.Forms.Button();
-            this.cleanWindowsUpdateBtn = new System.Windows.Forms.Button();
             this.cleanDiscordBtn = new System.Windows.Forms.Button();
             this.cleanSteamBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -46,7 +45,7 @@
             this.cleanTempBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanTempBtn.Name = "cleanTempBtn";
             this.cleanTempBtn.UseVisualStyleBackColor = false;
-            this.cleanTempBtn.Click += new System.EventHandler(this.CleanGeneralFolder);
+            this.cleanTempBtn.Click += new System.EventHandler(this.ClearWindows);
             // 
             // label1
             // 
@@ -62,18 +61,7 @@
             this.cleanShaderBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanShaderBtn.Name = "cleanShaderBtn";
             this.cleanShaderBtn.UseVisualStyleBackColor = false;
-            this.cleanShaderBtn.Click += new System.EventHandler(this.CleanShaderCache);
-            // 
-            // cleanWindowsUpdateBtn
-            // 
-            this.cleanWindowsUpdateBtn.BackColor = System.Drawing.SystemColors.Window;
-            this.cleanWindowsUpdateBtn.CausesValidation = false;
-            this.cleanWindowsUpdateBtn.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.cleanWindowsUpdateBtn, "cleanWindowsUpdateBtn");
-            this.cleanWindowsUpdateBtn.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cleanWindowsUpdateBtn.Name = "cleanWindowsUpdateBtn";
-            this.cleanWindowsUpdateBtn.UseVisualStyleBackColor = false;
-            this.cleanWindowsUpdateBtn.Click += new System.EventHandler(this.CleanWindowsUpdatePackages);
+            this.cleanShaderBtn.Click += new System.EventHandler(this.ClearShader);
             // 
             // cleanDiscordBtn
             // 
@@ -84,7 +72,7 @@
             this.cleanDiscordBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanDiscordBtn.Name = "cleanDiscordBtn";
             this.cleanDiscordBtn.UseVisualStyleBackColor = false;
-            this.cleanDiscordBtn.Click += new System.EventHandler(this.CleanUpDiscord);
+            this.cleanDiscordBtn.Click += new System.EventHandler(this.ClearDiscord);
             // 
             // cleanSteamBtn
             // 
@@ -95,7 +83,7 @@
             this.cleanSteamBtn.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cleanSteamBtn.Name = "cleanSteamBtn";
             this.cleanSteamBtn.UseVisualStyleBackColor = false;
-            this.cleanSteamBtn.Click += new System.EventHandler(this.CleanUpSteam);
+            this.cleanSteamBtn.Click += new System.EventHandler(this.ClearSteam);
             // 
             // Form1
             // 
@@ -103,7 +91,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.cleanSteamBtn);
             this.Controls.Add(this.cleanDiscordBtn);
-            this.Controls.Add(this.cleanWindowsUpdateBtn);
             this.Controls.Add(this.cleanShaderBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cleanTempBtn);
@@ -122,7 +109,6 @@
         private System.Windows.Forms.Button cleanTempBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cleanShaderBtn;
-        private System.Windows.Forms.Button cleanWindowsUpdateBtn;
     }
 }
 
