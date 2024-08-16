@@ -229,7 +229,7 @@
     <value>158, 44</value>
   </data>
   <data name="cleanDiscordBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="cleanDiscordBtn.Text" xml:space="preserve">
     <value>Discord Cache</value>
@@ -262,7 +262,7 @@
     <value>158, 44</value>
   </data>
   <data name="cleanSteamBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>2</value>
   </data>
   <data name="cleanSteamBtn.Text" xml:space="preserve">
     <value>Steam Cache</value>
