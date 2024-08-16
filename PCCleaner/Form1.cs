@@ -22,6 +22,13 @@ namespace PCCleaner
         {
             InitializeComponent();
             Load += Form1_Load;
+            
+            var toolTip = new ToolTip();
+            
+            toolTip.SetToolTip(cleanTempBtn, "Clear Windows temporary files and folders");
+            toolTip.SetToolTip(cleanSteamBtn, "Clear Steam cache and its temporary files");
+            toolTip.SetToolTip(cleanDiscordBtn, "Clear Discord cache and its temporary files");
+            toolTip.SetToolTip(cleanShaderBtn, "Clear graphics driver shader cache");
         }
         
         private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
