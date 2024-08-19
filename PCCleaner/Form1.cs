@@ -25,10 +25,10 @@ namespace PCCleaner
             
             var toolTip = new ToolTip();
             
-            toolTip.SetToolTip(cleanTempBtn, "Clear Windows temporary files and folders");
-            toolTip.SetToolTip(cleanSteamBtn, "Clear Steam cache and its temporary files");
-            toolTip.SetToolTip(cleanDiscordBtn, "Clear Discord cache and its temporary files");
-            toolTip.SetToolTip(cleanShaderBtn, "Clear graphics driver shader cache");
+            toolTip.SetToolTip(cleanTempBtn, "Clear Windows temporary and prefetch files and folders\n\nNote: This might slightly affect your machine performance");
+            toolTip.SetToolTip(cleanSteamBtn, "Clear Steam caches and temporary files");
+            toolTip.SetToolTip(cleanDiscordBtn, "Clear Discord caches and temporary files");
+            toolTip.SetToolTip(cleanShaderBtn, "Clear graphics driver shader caches");
         }
         
         private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
@@ -109,9 +109,10 @@ namespace PCCleaner
                 new DirectoryInfo(Path.GetTempPath()),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Temp")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"))
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"))
             };
             
             _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
