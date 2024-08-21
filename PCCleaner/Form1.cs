@@ -189,7 +189,7 @@ namespace PCCleaner
             };
             
             ResetCounter();
-            _totalFiles = nvidiaCacheDirectory.EnumerateFiles().Count() + nvidiaCacheDirectory.EnumerateDirectories().Count();
+            _totalFiles = shaderCacheDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(shaderCacheDirectories, _totalFiles);
         }
     }
