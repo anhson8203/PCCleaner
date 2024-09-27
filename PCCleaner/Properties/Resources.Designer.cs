@@ -96,20 +96,20 @@ namespace PCCleaner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  files and .
+        ///   Looks up a localized string similar to  items removed.
         /// </summary>
-        internal static string files_deleted {
+        internal static string items_removed {
             get {
-                return ResourceManager.GetString("files_deleted", resourceCulture);
+                return ResourceManager.GetString("items_removed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  folders deleted of total .
+        ///   Looks up a localized string similar to No file removed.
         /// </summary>
-        internal static string folders_deleted {
+        internal static string No_file_removed {
             get {
-                return ResourceManager.GetString("folders_deleted", resourceCulture);
+                return ResourceManager.GetString("No_file_removed", resourceCulture);
             }
         }
         
@@ -128,6 +128,16 @@ namespace PCCleaner.Properties {
         internal static string steam_not_installed {
             get {
                 return ResourceManager.GetString("steam_not_installed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///Total size: .
+        /// </summary>
+        internal static string TotalSize {
+            get {
+                return ResourceManager.GetString("TotalSize", resourceCulture);
             }
         }
     }

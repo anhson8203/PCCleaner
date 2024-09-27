@@ -117,12 +117,6 @@
   <data name="administrative_privileges_warning" xml:space="preserve">
     <value>This program is not running with administrative privileges. Some functions may not work properly</value>
   </data>
-  <data name="files_deleted" xml:space="preserve">
-    <value> files and </value>
-  </data>
-  <data name="folders_deleted" xml:space="preserve">
-    <value> folders deleted of total </value>
-  </data>
   <data name="nvidia_cache_not_exist" xml:space="preserve">
     <value>NVIDIA DXCache directory not found on this machine</value>
   </data>
@@ -137,5 +131,15 @@
   </data>
   <data name="admin_required" xml:space="preserve">
     <value>This feature requires administrator priviledges</value>
+  </data>
+  <data name="items_removed" xml:space="preserve">
+    <value> items removed</value>
+  </data>
+  <data name="TotalSize" xml:space="preserve">
+    <value>
+Total size: </value>
+  </data>
+  <data name="No_file_removed" xml:space="preserve">
+    <value>No file removed</value>
   </data>
 </root>
