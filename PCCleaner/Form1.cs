@@ -14,8 +14,7 @@ namespace PCCleaner
     {
         private const string Caption = "PC Cleaner";
 
-        private int _filesDeleted;
-        private int _foldersDeleted;
+        private int _totalDeleted;
         private int _totalFiles;
 
         private long _totalSize;
@@ -43,8 +42,7 @@ namespace PCCleaner
 
         private void ResetCounter()
         {
-            _filesDeleted = 0;
-            _foldersDeleted = 0;
+            _totalDeleted = 0;
             _totalFiles = 0;
         }
 
@@ -87,7 +85,7 @@ namespace PCCleaner
                         file.Delete();
                         
                         Interlocked.Add(ref _totalSize, file.Length);
-                        Interlocked.Increment(ref _filesDeleted);
+                        Interlocked.Increment(ref _totalDeleted);
                     }
                     catch
                     {
@@ -105,7 +103,7 @@ namespace PCCleaner
                         folder.Delete(true);
                         
                         Interlocked.Add(ref _totalSize, GetDirectorySize(folder));
-                        Interlocked.Increment(ref _foldersDeleted);
+                        Interlocked.Increment(ref _totalDeleted);
                     }
                     catch
                     {
@@ -116,10 +114,8 @@ namespace PCCleaner
                     }
                 });
             }
-
-            var totalDeleted = _filesDeleted + _foldersDeleted;
-
-            if (totalDeleted == 0)
+            
+            if (_totalDeleted == 0)
             {
                 MessageBox.Show(Resources.No_file_removed, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -129,7 +125,7 @@ namespace PCCleaner
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            MessageBox.Show(totalDeleted + Resources.items_removed + Resources.TotalSize + FormatSize(_totalSize), @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(_totalDeleted + Resources.items_removed + Resources.TotalSize + FormatSize(_totalSize), @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ClearWindows(object sender, EventArgs e)
@@ -140,7 +136,6 @@ namespace PCCleaner
                 return;
             }
 
-            ResetCounter();
             var generalDirectories = new List<DirectoryInfo>
             {
                 new DirectoryInfo(Path.GetTempPath()),
@@ -152,6 +147,7 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"))
             };
 
+            ResetCounter();
             _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(generalDirectories, _totalFiles);
         }
