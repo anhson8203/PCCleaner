@@ -70,6 +70,9 @@ namespace PCCleaner
                 MessageBox.Show(Resources.empty_folder, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            
+            // Reset the files counter
+            ResetCounter();
 
             var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
@@ -144,10 +147,10 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Temp")),
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"))
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
+                new DirectoryInfo(Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
             };
-
-            ResetCounter();
+            
             _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(generalDirectories, _totalFiles);
         }
@@ -172,7 +175,6 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(baseSteamPath, "GPUCache"))
             };
 
-            ResetCounter();
             _totalFiles = steamDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(steamDirectories, _totalFiles);
         }
@@ -197,7 +199,6 @@ namespace PCCleaner
                 new DirectoryInfo(Path.Combine(baseDiscordPath, "GPUCache"))
             };
 
-            ResetCounter();
             _totalFiles = discordDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(discordDirectories, _totalFiles);
         }
@@ -219,11 +220,9 @@ namespace PCCleaner
 
             var shaderCacheDirectories = new List<DirectoryInfo>
             {
-                nvidiaCacheDirectory,
-                new DirectoryInfo(Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
+                nvidiaCacheDirectory
             };
-
-            ResetCounter();
+            
             _totalFiles = shaderCacheDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(shaderCacheDirectories, _totalFiles);
         }
