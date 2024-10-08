@@ -12,7 +12,7 @@ namespace PCCleaner
 {
     public partial class Form1 : Form
     {
-        private const string Caption = "PC Cleaner";
+        private const string Caption = "PC Cleaner"; // MessageBox caption
 
         private int _totalDeleted;
         private int _totalFiles;
@@ -26,12 +26,13 @@ namespace PCCleaner
 
             var toolTip = new ToolTip();
 
-            toolTip.SetToolTip(cleanTempBtn, "Clear Windows temporary and prefetch files and folders\n\nNote: This might slightly affect your machine performance");
+            // Details for each button
+            toolTip.SetToolTip(cleanTempBtn, "Clear Windows temporary and prefetch files and folders\n\nNote: This might slightly affect your machine performance!");
             toolTip.SetToolTip(cleanSteamBtn, "Clear Steam caches and temporary files");
             toolTip.SetToolTip(cleanDiscordBtn, "Clear Discord caches and temporary files");
             toolTip.SetToolTip(cleanShaderBtn, "Clear graphics driver shader caches");
         }
-
+        
         private static bool IsAdmin() => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
         private static void Form1_Load(object sender, EventArgs e)
@@ -120,7 +121,7 @@ namespace PCCleaner
             
             if (_totalDeleted == 0)
             {
-                MessageBox.Show(Resources.No_file_removed, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.no_item_removed, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -128,7 +129,7 @@ namespace PCCleaner
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            MessageBox.Show(_totalDeleted + Resources.items_removed + Resources.TotalSize + FormatSize(_totalSize), @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(_totalDeleted + Resources.items_removed + Resources.total_size + FormatSize(_totalSize), @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ClearWindows(object sender, EventArgs e)
@@ -168,6 +169,7 @@ namespace PCCleaner
             var steamDirectories = new List<DirectoryInfo>
             {
                 new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "appcache", "httpcache")),
+                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "logs")),
                 new DirectoryInfo(Path.Combine(baseSteamPath, "blob_storage")),
                 new DirectoryInfo(Path.Combine(baseSteamPath, "Cache")),
                 new DirectoryInfo(Path.Combine(baseSteamPath, "Code Cache")),
@@ -181,8 +183,7 @@ namespace PCCleaner
 
         private void ClearDiscord(object sender, EventArgs e)
         {
-            var baseDiscordPath =
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord");
+            var baseDiscordPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Roaming", "discord");
 
             if (!Directory.Exists(baseDiscordPath))
             {
@@ -218,10 +219,7 @@ namespace PCCleaner
                 }
             }
 
-            var shaderCacheDirectories = new List<DirectoryInfo>
-            {
-                nvidiaCacheDirectory
-            };
+            var shaderCacheDirectories = new List<DirectoryInfo>{ nvidiaCacheDirectory };
             
             _totalFiles = shaderCacheDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
             ClearCache(shaderCacheDirectories, _totalFiles);

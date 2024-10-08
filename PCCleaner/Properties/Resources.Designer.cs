@@ -107,7 +107,7 @@ namespace PCCleaner.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No file removed.
         /// </summary>
-        internal static string No_file_removed {
+        internal static string no_item_removed {
             get {
                 return ResourceManager.GetString("No_file_removed", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace PCCleaner.Properties {
         ///   Looks up a localized string similar to 
         ///Total size: .
         /// </summary>
-        internal static string TotalSize {
+        internal static string total_size {
             get {
                 return ResourceManager.GetString("TotalSize", resourceCulture);
             }
