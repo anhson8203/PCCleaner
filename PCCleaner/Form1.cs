@@ -45,6 +45,7 @@ namespace PCCleaner
         {
             _totalDeleted = 0;
             _totalFiles = 0;
+            _totalSize = 0L;
         }
 
         private static long GetDirectorySize(DirectoryInfo directory) => directory.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
@@ -72,7 +73,7 @@ namespace PCCleaner
                 return;
             }
             
-            // Reset the files counter
+            // Reset the all counters
             ResetCounter();
 
             var options = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
