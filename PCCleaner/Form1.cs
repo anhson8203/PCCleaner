@@ -141,19 +141,29 @@ namespace PCCleaner
                 return;
             }
 
-            var generalDirectories = new List<DirectoryInfo>
+            // Some genius shits that I didn't even know how I could came up with
+            var potentialDirectories = new List<string>
             {
-                new DirectoryInfo(Path.GetTempPath()),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Temp")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps")),
-                new DirectoryInfo(Path.Combine( Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache"))
+                Path.GetTempPath(),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Prefetch"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "SoftwareDistribution", "Download"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Temp"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "Microsoft", "Windows", "Explorer"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "CrashDumps"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache")
             };
-            
-            _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
+
+            // Yes, this filters out the directories that doesn't exist
+            var generalDirectories = potentialDirectories
+                .Where(Directory.Exists)
+                .Select(path => new DirectoryInfo(path))
+                .ToList();
+
+            _totalFiles = generalDirectories.Sum(directory => 
+                directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
+                directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
+
             ClearCache(generalDirectories, _totalFiles);
         }
 
