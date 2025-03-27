@@ -141,7 +141,7 @@ namespace PCCleaner
                 return;
             }
 
-            // Some genius shits that I didn't even know how I could came up with
+            // Some genius shits that I didn't even know how I came up with
             var potentialDirectories = new List<string>
             {
                 Path.GetTempPath(),
@@ -154,15 +154,14 @@ namespace PCCleaner
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "D3DSCache")
             };
 
-            // Yes, this filters out the directories that doesn't exist
+            // Yes, this filters out the stupid directories that don't exist
             var generalDirectories = potentialDirectories
                 .Where(Directory.Exists)
                 .Select(path => new DirectoryInfo(path))
                 .ToList();
 
-            _totalFiles = generalDirectories.Sum(directory => 
-                directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
-                directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
+            _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
+                                                              directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
 
             ClearCache(generalDirectories, _totalFiles);
         }
@@ -217,23 +216,26 @@ namespace PCCleaner
 
         private void ClearShader(object sender, EventArgs e)
         {
-            var nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"));
-
-            if (!nvidiaCacheDirectory.Exists)
+            var potentialDirectories = new List<string>
             {
-                nvidiaCacheDirectory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"));
-                
-                if (!nvidiaCacheDirectory.Exists)
-                {
-                    MessageBox.Show(Resources.nvidia_cache_not_exist, Caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-            }
-
-            var shaderCacheDirectories = new List<DirectoryInfo>{ nvidiaCacheDirectory };
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache")
+            };
             
-            _totalFiles = shaderCacheDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
-            ClearCache(shaderCacheDirectories, _totalFiles);
+            var nvidiaCacheDirectory = potentialDirectories
+                .Where(Directory.Exists)
+                .Select(path => new DirectoryInfo(path))
+                .ToList();
+            
+            if (nvidiaCacheDirectory.Count == 0)
+            {
+                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            
+            _totalFiles = nvidiaCacheDirectory.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
+                                                              directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
+            ClearCache(nvidiaCacheDirectory, _totalFiles);
         }
     }
 }
