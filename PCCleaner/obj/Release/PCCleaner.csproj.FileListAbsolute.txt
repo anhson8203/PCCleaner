@@ -18,3 +18,13 @@ D:\RMIT University\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.G
 D:\RMIT University\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.CoreCompileInputs.cache
 D:\RMIT University\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.exe
 D:\RMIT University\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.pdb
+D:\Self Study\PCCleaner\PCCleaner\bin\Release\PCCleaner.exe.config
+D:\Self Study\PCCleaner\PCCleaner\bin\Release\PCCleaner.exe
+D:\Self Study\PCCleaner\PCCleaner\bin\Release\PCCleaner.pdb
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.AssemblyReference.cache
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.Form1.resources
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.Properties.Resources.resources
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.GenerateResource.cache
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.csproj.CoreCompileInputs.cache
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.exe
+D:\Self Study\PCCleaner\PCCleaner\obj\Release\PCCleaner.pdb

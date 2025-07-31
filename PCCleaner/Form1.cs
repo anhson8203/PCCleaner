@@ -201,17 +201,23 @@ namespace PCCleaner
                 return;
             }
 
-            var discordDirectories = new List<DirectoryInfo>
+            // I fucking hate Discord for this
+            var potentialDiscordDirectories = new List<String>
             {
-                new DirectoryInfo(Path.Combine(baseDiscordPath, "blob_storage")),
-                new DirectoryInfo(Path.Combine(baseDiscordPath, "Cache")),
-                new DirectoryInfo(Path.Combine(baseDiscordPath, "Code Cache")),
-                new DirectoryInfo(Path.Combine(baseDiscordPath, "DawnCache")),
-                new DirectoryInfo(Path.Combine(baseDiscordPath, "GPUCache"))
+                Path.Combine(baseDiscordPath, "blob_storage"),
+                Path.Combine(baseDiscordPath, "Cache"),
+                Path.Combine(baseDiscordPath, "Code Cache"),
+                Path.Combine(baseDiscordPath, "DawnCache"),
+                Path.Combine(baseDiscordPath, "GPUCache")
             };
 
-            _totalFiles = discordDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
-            ClearCache(discordDirectories, _totalFiles);
+            var finalDiscordDirectories = potentialDiscordDirectories
+                .Where(Directory.Exists)
+                .Select(path => new DirectoryInfo(path))
+                .ToList();
+
+            _totalFiles = finalDiscordDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
+            ClearCache(finalDiscordDirectories, _totalFiles);
         }
 
         private void ClearShader(object sender, EventArgs e)
