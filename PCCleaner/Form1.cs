@@ -207,8 +207,11 @@ namespace PCCleaner
                 Path.Combine(baseDiscordPath, "blob_storage"),
                 Path.Combine(baseDiscordPath, "Cache"),
                 Path.Combine(baseDiscordPath, "Code Cache"),
+                Path.Combine(baseDiscordPath, "DawnGraphiteCache"),
+                Path.Combine(baseDiscordPath, "DawnWebGPUCache"),
                 Path.Combine(baseDiscordPath, "DawnCache"),
-                Path.Combine(baseDiscordPath, "GPUCache")
+                Path.Combine(baseDiscordPath, "GPUCache"),
+                Path.Combine(baseDiscordPath, "Service Worker", "CacheStorage")
             };
 
             var finalDiscordDirectories = potentialDiscordDirectories
