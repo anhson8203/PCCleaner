@@ -160,8 +160,7 @@ namespace PCCleaner
                 .Select(path => new DirectoryInfo(path))
                 .ToList();
 
-            _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
-                                                              directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
+            _totalFiles = generalDirectories.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
 
             ClearCache(generalDirectories, _totalFiles);
         }
@@ -176,19 +175,26 @@ namespace PCCleaner
                 return;
             }
 
-            var steamDirectories = new List<DirectoryInfo>
+            var potentialSteamDirectories = new List<String>
             {
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "appcache", "httpcache")),
-                new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "logs")),
-                new DirectoryInfo(Path.Combine(baseSteamPath, "blob_storage")),
-                new DirectoryInfo(Path.Combine(baseSteamPath, "Cache")),
-                new DirectoryInfo(Path.Combine(baseSteamPath, "Code Cache")),
-                new DirectoryInfo(Path.Combine(baseSteamPath, "DawnCache")),
-                new DirectoryInfo(Path.Combine(baseSteamPath, "GPUCache"))
+                Path.Combine(baseSteamPath, "Default", "blob_storage"),
+                Path.Combine(baseSteamPath, "Default", "Cache"),
+                Path.Combine(baseSteamPath, "Default", "Code Cache"),
+                Path.Combine(baseSteamPath, "Default", "DawnGraphiteCache"),
+                Path.Combine(baseSteamPath, "Default", "DawnWebGPUCache"),
+                Path.Combine(baseSteamPath, "Default", "GPUCache"),
+                Path.Combine(baseSteamPath, "ShaderCache"),
+                Path.Combine(baseSteamPath, "GraphiteDawnCache"),
+                Path.Combine(baseSteamPath, "GrShaderCache")
             };
 
-            _totalFiles = steamDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
-            ClearCache(steamDirectories, _totalFiles);
+            var finalSteamDirectories = potentialSteamDirectories
+                .Where(Directory.Exists)
+                .Select(path => new DirectoryInfo(path))
+                .ToList();
+
+            _totalFiles = finalSteamDirectories.Sum(directory => directory.EnumerateFiles().Count() + directory.EnumerateDirectories().Count());
+            ClearCache(finalSteamDirectories, _totalFiles);
         }
 
         private void ClearDiscord(object sender, EventArgs e)
@@ -211,6 +217,7 @@ namespace PCCleaner
                 Path.Combine(baseDiscordPath, "DawnWebGPUCache"),
                 Path.Combine(baseDiscordPath, "DawnCache"),
                 Path.Combine(baseDiscordPath, "GPUCache"),
+                Path.Combine(baseDiscordPath, "logs"),
                 Path.Combine(baseDiscordPath, "Service Worker", "CacheStorage")
             };
 
@@ -242,8 +249,7 @@ namespace PCCleaner
                 return;
             }
             
-            _totalFiles = nvidiaCacheDirectory.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + 
-                                                              directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
+            _totalFiles = nvidiaCacheDirectory.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
             ClearCache(nvidiaCacheDirectory, _totalFiles);
         }
     }

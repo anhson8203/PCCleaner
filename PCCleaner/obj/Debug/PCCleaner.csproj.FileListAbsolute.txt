@@ -28,3 +28,13 @@ D:\Self Study\PCCleaner\PCCleaner\obj\Debug\PCCleaner.csproj.GenerateResource.ca
 D:\Self Study\PCCleaner\PCCleaner\obj\Debug\PCCleaner.csproj.CoreCompileInputs.cache
 D:\Self Study\PCCleaner\PCCleaner\obj\Debug\PCCleaner.exe
 D:\Self Study\PCCleaner\PCCleaner\obj\Debug\PCCleaner.pdb
+D:\RMIT University\PCCleaner\PCCleaner\bin\Debug\PCCleaner.exe.config
+D:\RMIT University\PCCleaner\PCCleaner\bin\Debug\PCCleaner.exe
+D:\RMIT University\PCCleaner\PCCleaner\bin\Debug\PCCleaner.pdb
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.csproj.AssemblyReference.cache
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.Form1.resources
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.Properties.Resources.resources
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.csproj.GenerateResource.cache
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.csproj.CoreCompileInputs.cache
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.exe
+D:\RMIT University\PCCleaner\PCCleaner\obj\Debug\PCCleaner.pdb
