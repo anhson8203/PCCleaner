@@ -232,10 +232,21 @@ namespace PCCleaner
 
         private void ClearShader(object sender, EventArgs e)
         {
+            var confirmResult = MessageBox.Show("Are you sure you want to clear shader cache?\n\nThis might cause performance issues in games or applications!",
+                Caption,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirmResult != DialogResult.Yes)
+                return;
+
             var potentialDirectories = new List<string>
             {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "AMD", "DxCache"),
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache")
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "GLCache")
             };
             
             var nvidiaCacheDirectory = potentialDirectories
