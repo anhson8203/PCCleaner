@@ -232,6 +232,25 @@ namespace PCCleaner
 
         private void ClearShader(object sender, EventArgs e)
         {
+            var potentialDirectories = new List<string>
+            {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "AMD", "DxCache"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "GLCache")
+            };
+
+            var nvidiaCacheDirectory = potentialDirectories
+                .Where(Directory.Exists)
+                .Select(path => new DirectoryInfo(path))
+                .ToList();
+
+            if (nvidiaCacheDirectory.Count == 0)
+            {
+                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             var confirmResult = MessageBox.Show("Are you sure you want to clear shader cache?\n\nThis might cause performance issues in games or applications!",
                 Caption,
                 MessageBoxButtons.YesNo,
@@ -241,25 +260,6 @@ namespace PCCleaner
             if (confirmResult != DialogResult.Yes)
                 return;
 
-            var potentialDirectories = new List<string>
-            {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "AMD", "DxCache"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "NVIDIA", "PerDriverVersion", "DXCache"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "DXCache"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "Local", "NVIDIA", "GLCache")
-            };
-            
-            var nvidiaCacheDirectory = potentialDirectories
-                .Where(Directory.Exists)
-                .Select(path => new DirectoryInfo(path))
-                .ToList();
-            
-            if (nvidiaCacheDirectory.Count == 0)
-            {
-                MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            
             _totalFiles = nvidiaCacheDirectory.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
             ClearCache(nvidiaCacheDirectory, _totalFiles);
         }
