@@ -230,8 +230,18 @@ namespace PCCleaner
             ClearCache(finalDiscordDirectories, _totalFiles);
         }
 
+        // NVIDIA is a bitch
         private void ClearShader(object sender, EventArgs e)
         {
+            var confirmResult = MessageBox.Show("Are you sure you want to clear shader cache?\n\nThis might cause performance issues in games or applications!",
+                Caption,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirmResult != DialogResult.Yes)
+                return;
+
             var potentialDirectories = new List<string>
             {
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "..", "LocalLow", "AMD", "DxCache"),
@@ -250,15 +260,6 @@ namespace PCCleaner
                 MessageBox.Show(Resources.nvidia_cache_not_exist, @"PC Cleaner", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            var confirmResult = MessageBox.Show("Are you sure you want to clear shader cache?\n\nThis might cause performance issues in games or applications!",
-                Caption,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (confirmResult != DialogResult.Yes)
-                return;
 
             _totalFiles = nvidiaCacheDirectory.Sum(directory => directory.EnumerateFiles("*", SearchOption.AllDirectories).Count() + directory.EnumerateDirectories("*", SearchOption.AllDirectories).Count());
             ClearCache(nvidiaCacheDirectory, _totalFiles);
